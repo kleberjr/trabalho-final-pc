@@ -177,13 +177,11 @@ void *f_rock_lee(void *arg) {
     printf("Rock Lee entrou no campo de batalha!\n");
 
     while(1) {
-		sem_getvalue(&power_portions, &value);
-		printf("Rock Lee esta lutando contra os inimigos...\n");
-		sleep(2+rand()%5);
-
 		// Sempre que houver porções de poder para o Lee, ele pega uma e vai lutar...
         sem_wait(&power_portions);
 		printf("Rock Lee utilizou uma porcao do poder do Naruto! -- Quantidade de porcoes restantes: %d\n", value);
+		printf("Rock Lee esta lutando contra os inimigos...\n");
+		sleep(2+rand()%5);
     }
 	
     pthread_exit(0);
