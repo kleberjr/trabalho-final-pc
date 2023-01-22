@@ -13,10 +13,10 @@
 #define NUM_CLONES 3				// Número de clones do Naruto
 #define CHAKRA_TO_HEAL_NINJA 25		// Quantidade de chakra necessário para curar um ninja	
 #define CHAKRA_TO_VITALIZE_CLONE 15	// Quantidade de chakra necessário para revitalizar um clone
-#define MAX_CHAKRA_LEVEL 100		// Nível máximo de chakra que a Sakura pode alcançar
+#define MAX_CHAKRA_LEVEL 200		// Nível máximo de chakra que a Sakura pode alcançar
 #define POWER_TO_HELP_LEE 40		// Nível de poder necessário para ajuda o Rock Lee
 
-int sakura_chakra = 100;		// Nível de chakra da Sakura
+int sakura_chakra = MAX_CHAKRA_LEVEL;		// Nível de chakra da Sakura
 int regular_ninjas_injured = 0; // Quantidade de ninjas normais querendo cura
 
 pthread_t sakura;							// Declara a thread da Sakura
@@ -77,14 +77,14 @@ void *f_sakura(void *arg) {
 	while(1) {
         pthread_mutex_lock(&healing_zone); 
             // Enquanto houver houver chakra suficiente, a Sakura pode descansar
-			while(sakura_chakra > 25) {							
+			while(sakura_chakra > CHAKRA_TO_HEAL_NINJA) {							
 				printf("Sakura não precisa reunir mais chakra por hora... -- Nivel de chakra atual: %d\n", sakura_chakra);
                 pthread_cond_wait(&sakura_cond, &healing_zone);
             }
 			
 			// Se o chakra for insuficiente, Sakura deve reunir mais
             printf("Sakura esta reunindo chakra... -- Nivel de chakra da Sakura: %d\n", sakura_chakra);
-            sakura_chakra = 100;
+            sakura_chakra = MAX_CHAKRA_LEVEL;
 			sleep(4);
             printf("Sakura esta com 100 por cento de seu chakra!\n");
 
@@ -178,7 +178,7 @@ void *f_rock_lee(void *arg) {
 
     while(1) {
 		sem_getvalue(&power_portions, &value);
-		printf("Rock Lee esta lutando contra os inimigos... -- Quantidade de porcoes restantes: %d\n", value);
+		printf("Rock Lee esta lutando contra os inimigos...\n");
 		sleep(2+rand()%5);
 
 		// Sempre que houver porções de poder para o Lee, ele pega uma e vai lutar...
